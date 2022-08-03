@@ -1,4 +1,6 @@
 //import modules
+require('dotenv').config()
+
 const express = require('express');
 const mongoose = require('mongoose')
 const session = require('express-session')
@@ -10,7 +12,7 @@ const userRouter = require('./routers/User')
 const entryRouter = require('./routers/Product')
 
 //create url needed to connect to db (infinity-market)
-const url='mongodb+srv://jpomstra:test1234@cluster0.ivxge.mongodb.net/infinity-market?retryWrites=true&w=majority'
+const url=process.env.MONGO_URL
 
 //connect to the databse
 mongoose.connect(url,{useNewUrlParser:true,useUnifiedTopology:true},(error)=>{
@@ -21,15 +23,15 @@ mongoose.connect(url,{useNewUrlParser:true,useUnifiedTopology:true},(error)=>{
 })
 
 const app = express()   //set app (import express)
-const port = 3000   //set port to 3000
-app.listen(port)    //open a port at port 3000
+const port = process.env.PORT   //set port
+app.listen(port)    //open a port 
 
 app.use(express.urlencoded({extended: true})) // needed to parse requests using req.body
 app.use(express.json()) //needed to convert things to json
 
 //create persistent session store on mongoDB with secret key 'topsecretkey'
 app.use(session({
-    secret:'topsecretkey',
+    secret: process.env.SESSION_KEY,
     resave:false,
     saveUninitialized:false,
     store: MongoStore.create({ mongoUrl: url })
