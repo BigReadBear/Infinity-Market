@@ -41,6 +41,10 @@ app.use(flash()) //use flash, this allows to access the response even though it'
 app.use(userRouter.router) // add user routes
 app.use(entryRouter) // add product routes
 
+app.get('/', (req, res) => {
+    res.send('<h1>SERVER-SIDE APPLICATION ONLY: Use POSTMAN to make requests to this app<h1>')
+})
+
 
 
 
